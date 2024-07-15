@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+/* 로그인, 회원가입 버튼 스타일 */
+.login-button,
+.signup-button {
+  font-size: 18px;
+  padding: 10px 20px;
+}
