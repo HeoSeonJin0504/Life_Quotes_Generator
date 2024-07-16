@@ -1,8 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Banner = () => {
   return (
-    <img className="banner" alt="banner" src="img/banner.jpg" style={{ width: '20%', height: 'auto' }} />
+    <Link to="/">
+      <img className="banner" alt="banner" src="img/banner.jpg" style={{ width: '20%', height: 'auto' }} />
+    </Link>
   );
 };
 
