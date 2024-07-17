@@ -9,10 +9,11 @@ import SignupPage from './components/SignupPage';
 import './App.css';
 
 const App = () => {
-  // 창 너비 상태 관리
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // 창 크기 변화 감지 및 이벤트 리스너 정리
+  // 회원 데이터를 저장할 상태 추가
+  const [users, setUsers] = useState([]);
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -23,26 +24,43 @@ const App = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []); // 빈 배열은 마운트 시 한 번만 실행
+  }, []);
+
+  // 회원가입 함수
+  const handleSignup = (newUser) => {
+    const userExists = users.some(user => user.id === newUser.id);
+    if (userExists) {
+      alert('이미 있는 아이디입니다.');
+    } else {
+      setUsers([...users, newUser]);
+      alert('회원가입 성공!');
+    }
+  };
+
+  // 로그인 함수
+  const handleLogin = (id, password) => {
+    const user = users.find(user => user.id === id && user.password === password);
+    if (!user) {
+      alert('아이디 및 비밀번호를 확인하세요.');
+    } else {
+      alert('로그인 성공!');
+    }
+  };
 
   return (
     <Router>
       <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
-        {/* 배너와 네비게이션 바 */}
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <Banner style={{ width: `${Math.min(windowWidth * 0.2, 200)}px`, height: 'auto' }} />
           <div style={{ flex: '1', display: 'flex', justifyContent: 'flex-end' }}>
-            {/* 네비게이션 링크 */}
             <Link to="/login"><Login /></Link>
             <Link to="/signup"><Signup /></Link>
           </div>
         </div>
-
-        {/* 라우팅 구성 */}
         <Routes>
           <Route path="/" element={<Introduction />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/signup" element={<SignupPage onSignup={handleSignup} />} />
         </Routes>
       </div>
     </Router>
